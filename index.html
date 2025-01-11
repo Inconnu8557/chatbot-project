@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatbot Code & Productivité</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    #chat { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: auto; }
+    #input { margin-top: 10px; display: flex; }
+    #input textarea { flex: 1; padding: 10px; }
+    #input button { padding: 10px; margin-left: 5px; }
+  </style>
+</head>
+<body>
+  <h1>Chatbot Code & Productivité</h1>
+  <div id="chat"></div>
+  <div id="input">
+    <textarea id="userInput" rows="2" placeholder="Posez une question..."></textarea>
+    <button onclick="sendMessage()">Envoyer</button>
+  </div>
+
+  <script>
+    const chat = document.getElementById('chat');
+    const proxy = "https://cors-anywhere.herokuapp.com/";
+    const apiUrl = "https://api.openai.com/v1/chat/completions";
+    const fullUrl = proxy + apiUrl;
+    async function sendMessage() {
+      const userInput = document.getElementById('userInput').value;
+      if (!userInput) return;
+
+      // Afficher la question de l'utilisateur
+      addMessage('Utilisateur', userInput);
+
+      // Requête API OpenAI
+const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer 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'
+        },
+        body: JSON.stringify({
+          model: "gpt-4",
+          messages: [{ role: "system", content: "Tu es un assistant spécialisé dans le code et la productivité." },
+                     { role: "user", content: userInput }]
+        })
+      });
+
+      const data = await response.json();
+      const reply = data.choices[0]?.message?.content || "Je n'ai pas pu comprendre votre question.";
+
+      // Afficher la réponse du chatbot
+      addMessage('Chatbot', reply);
+      document.getElementById('userInput').value = '';
+    }
+
+    function addMessage(sender, text) {
+      const message = document.createElement('div');
+      message.innerHTML = `<strong>${sender}:</strong> ${text}`;
+      chat.appendChild(message);
+      chat.scrollTop = chat.scrollHeight; // Scroller vers le bas
+    }
+  </script>
+</body>
+</html>
