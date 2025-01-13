@@ -4,4 +4,4 @@ const ChatbotIcon = () => {
 </svg>
     );
 };
-export default ChatbotIcon;
+export default ChatbotIcon; 
