@@ -8,6 +8,7 @@ const App = () => {
           <ChatbotIcon />
           <h2 className="logo-text">Chatbot</h2>
         </div>
+        <button className="material-symbols-rounded">keyboard_arrow_down</button>
       </div>
     </div>
   );
